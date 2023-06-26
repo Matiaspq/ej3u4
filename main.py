@@ -43,10 +43,13 @@ class Aplicacion():
         
         r=requests.get("https://www.dolarsi.com/api/api.php?type=dolar")
         datos=r.json()
-        for casa in datos:
+        index=0
+        preciooficial=None
+        while index < len(datos) and not preciooficial:
+            casa = datos[index]
             if casa['casa']['nombre'] == 'Oficial':
                 preciooficial = float(casa['casa']['venta'].replace(',', '.'))
-                break
+            index += 1
             
         valor=float(self.dolares.get())
         self.__pesos.set(preciooficial*valor)
